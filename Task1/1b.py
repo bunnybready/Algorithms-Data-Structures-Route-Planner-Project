@@ -1,133 +1,108 @@
 import sys, os, time, random, string
 import matplotlib.pyplot as plt
+import pandas as pd
 
-# Make sure Python can see the clrsPython package from your project root
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from clrsPython.Chapter_11.chained_hashtable import ChainedHashTable
-from clrsPython.Chapter_11.hash_functions import cryptographic_hash
 
 
-# ============================
-# Station wrapper (same idea as Task 1a)
-# ============================
-class Station:
-    def __init__(self, name, key):
-        self.name = name
-        self.key = key
+def load_station_names():
+    here = os.path.dirname(__file__)
+    excel_path = os.path.join(here, "..", "data", "London Underground data.xlsx")
 
-    @staticmethod
-    def get_key(obj):
-        return obj.key
+    df = pd.read_excel(excel_path)
 
-    def __str__(self):
-        return self.name
+    # station name columns are 2nd and 3rd
+    col1 = df.columns[1]
+    col2 = df.columns[2]
 
+    s1 = df[col1].dropna().astype(str)
+    s2 = df[col2].dropna().astype(str)
 
-# ============================
-# Data generation
-# ============================
-def generate_stations(n):
-    """
-    Generate n artificial station names: Station_XXXXX.
-    Uses random letters so keys are not trivial.
-    """
-    stations = []
-    for i in range(n):
-        suffix = ''.join(random.choices(string.ascii_uppercase, k=5))
-        stations.append(f"Station_{suffix}")
+    stations = sorted(set(s1) | set(s2))
     return stations
 
 
-# ============================
-# Timing one size n
-# ============================
-def measure_times_for_n(n, runs=3):
-    """
-    Measure average time per insert / search / delete operation
-    for a chained hash table of size n, averaged over `runs`.
-    Returns (insert_avg, search_avg, delete_avg) in seconds per operation.
-    """
-    insert_total = 0.0
-    search_total = 0.0
-    delete_total = 0.0
+ALL_STATIONS = load_station_names()
+print(f"Loaded {len(ALL_STATIONS)} unique London Underground stations.")
+
+
+def generate_station_sample(n):
+    if n >= len(ALL_STATIONS):
+        return ALL_STATIONS[:]
+    return random.sample(ALL_STATIONS, n)
+
+
+def measure_times(n, runs=3):
+    insert_total = search_total = delete_total = 0.0
 
     for _ in range(runs):
-        stations = generate_stations(n)
+        sample = generate_station_sample(n)
+        table = ChainedHashTable(n)
 
-        # Create a new hash table for each run
-        table = ChainedHashTable(n, Station.get_key)
-
-        # --- Measure insert time ---
+        # insert
         start = time.perf_counter()
-        for name in stations:
-            key = cryptographic_hash(name, n)
-            table.insert(Station(name, key))
-        end = time.perf_counter()
-        insert_total += (end - start)
+        for name in sample:
+            table.insert(name)      # same behaviour as your 1a
+        insert_total += time.perf_counter() - start
 
-        # --- Measure search time ---
+        # search
         start = time.perf_counter()
-        for name in stations:
-            key = cryptographic_hash(name, n)
-            table.search(key)  # returns node or None
-        end = time.perf_counter()
-        search_total += (end - start)
+        for name in sample:
+            table.search(name)
+        search_total += time.perf_counter() - start
 
-        # --- Measure delete time ---
+        # delete
         start = time.perf_counter()
-        for name in stations:
-            key = cryptographic_hash(name, n)
-            node = table.search(key)
+        for name in sample:
+            node = table.search(name)
             if node:
-                table.delete(node)   # CLRS delete takes the node itself
-        end = time.perf_counter()
-        delete_total += (end - start)
+                table.delete(node)  # delete using node reference (just like 1a)
+        delete_total += time.perf_counter() - start
 
-    # Average *per operation* time
-    insert_avg = insert_total / (runs * n)
-    search_avg = search_total / (runs * n)
-    delete_avg = delete_total / (runs * n)
+    # Average time per operation
+    return (
+        insert_total / (runs * n),
+        search_total / (runs * n),
+        delete_total / (runs * n),
+    )
 
-    return insert_avg, search_avg, delete_avg
 
-
-# ============================
-# Main experiment + plotting
-# ============================
 if __name__ == "__main__":
-    # Different network sizes (n = number of stations)
-    ns = [100, 500, 1000, 5000, 10000]
+    max_n = len(ALL_STATIONS)
 
-    insert_times = []
-    search_times = []
-    delete_times = []
+    sizes = [20, 50, 100, 150, max_n]
 
-    for n in ns:
-        ins, sea, dele = measure_times_for_n(n, runs=3)
-        insert_times.append(ins)
-        search_times.append(sea)
-        delete_times.append(dele)
+    insert_t = []
+    search_t = []
+    delete_t = []
 
-        print(f"n={n}: "
-              f"insert={ins:.3e} s/op, "
-              f"search={sea:.3e} s/op, "
-              f"delete={dele:.3e} s/op")
+    # RUN EXPERIMENT
+    for n in sizes:
+        ins, sea, dele = measure_times(n)
+        insert_t.append(ins)
+        search_t.append(sea)
+        delete_t.append(dele)
+        print(f"n={n}: insert={ins:.4e}, search={sea:.4e}, delete={dele:.4e}")
 
-    # Plot average time per operation vs n
-    plt.plot(ns, insert_times, marker="o", label="Insert")
-    plt.plot(ns, search_times, marker="s", label="Search")
-    plt.plot(ns, delete_times, marker="^", label="Delete")
+    US = 1e6
 
-    plt.xlabel("Network size n (number of stations)")
-    plt.ylabel("Average time per operation (seconds)")
-    plt.title("Chained Hash Table Performance vs Network Size")
+    plt.figure(figsize=(8, 5))
+
+    plt.plot(sizes, [t * US for t in insert_t],
+             marker="o", label="Insert")
+    plt.plot(sizes, [t * US for t in search_t],
+             marker="s", label="Search")
+    plt.plot(sizes, [t * US for t in delete_t],
+             marker="^", label="Delete")
+
+    plt.xlabel("Number of stations (n)")
+    plt.ylabel("Average time per operation (µs)")  # now labelled properly
+    plt.title("Task 1(b): Hash Table Performance (Microseconds)")
     plt.legend()
     plt.grid(True)
-
-    # Save the figure so you can drop it straight into your report
     plt.tight_layout()
-    plt.savefig("task1b_hash_performance.png")
 
-    # And/or show it interactively
+    plt.savefig("task1b_performance_plot_microseconds.png")
     plt.show()
