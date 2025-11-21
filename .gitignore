@@ -1,0 +1,32 @@
+.idea
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.nfs*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Compiled binary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.a
+*.out
+*.obj
+
