@@ -30,8 +30,8 @@
 #                                                                       #
 #########################################################################
 
-from single_source_shortest_paths import initialize_single_source, relax
-from min_heap_priority_queue import MinHeapPriorityQueue
+from clrsPython.Chapter_22.single_source_shortest_paths import initialize_single_source, relax
+from clrsPython.Chapter_6.min_heap_priority_queue import MinHeapPriorityQueue
 
 
 def dijkstra(G, s):
