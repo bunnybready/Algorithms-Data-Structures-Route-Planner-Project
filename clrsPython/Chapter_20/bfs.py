@@ -30,9 +30,9 @@
 #                                                                       #
 #########################################################################
 
-from fifo_queue import Queue
-from adjacency_list_graph import AdjacencyListGraph
-from print_path import print_path
+from clrsPython.Chapter_10.fifo_queue import Queue
+from clrsPython.Utility_functions.adjacency_list_graph import AdjacencyListGraph
+from clrsPython.Chapter_20.print_path import print_path
 
 WHITE = 0  # undiscovered
 GRAY = 1   # discovered

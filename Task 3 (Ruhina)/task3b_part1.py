@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(CLRS_ROOT, 'Chapter 10'))
 sys.path.insert(0, os.path.join(CLRS_ROOT, 'Utility functions'))
 
 # Import bfs
-from bfs import bfs
+from clrsPython.Chapter_20.bfs import bfs
 
 class Edge:
     def __init__(self, v):
@@ -75,4 +75,4 @@ plt.xlabel("Network size (n stations)")
 plt.ylabel("Average BFS time (seconds)")
 plt.title("Empirical BFS Performance")
 plt.grid(True)
-plt.show()
+plt.savefig("task3b_performance_graph.png")

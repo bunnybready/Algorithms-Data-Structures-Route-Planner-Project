@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(CLRS_ROOT, 'Chapter 10'))
 sys.path.insert(0, os.path.join(CLRS_ROOT, 'Utility functions'))
 
 # Import bfs from clrsPython
-from bfs import bfs
+from clrsPython.Chapter_20.bfs import bfs
 
 # Read CSV file
 csv_file = os.path.join(PROJECT_ROOT, 'data', 'London_Underground_data.csv')
