@@ -13,7 +13,6 @@ def load_station_names():
 
     df = pd.read_excel(excel_path)
 
-    # station name columns are 2nd and 3rd
     col1 = df.columns[1]
     col2 = df.columns[2]
 
@@ -44,7 +43,7 @@ def measure_times(n, runs=3):
         # insert
         start = time.perf_counter()
         for name in sample:
-            table.insert(name)      # same behaviour as your 1a
+            table.insert(name)
         insert_total += time.perf_counter() - start
 
         # search
@@ -58,7 +57,7 @@ def measure_times(n, runs=3):
         for name in sample:
             node = table.search(name)
             if node:
-                table.delete(node)  # delete using node reference (just like 1a)
+                table.delete(node)
         delete_total += time.perf_counter() - start
 
     # Average time per operation
@@ -78,7 +77,6 @@ if __name__ == "__main__":
     search_t = []
     delete_t = []
 
-    # RUN EXPERIMENT
     for n in sizes:
         ins, sea, dele = measure_times(n)
         insert_t.append(ins)
@@ -98,7 +96,7 @@ if __name__ == "__main__":
              marker="^", label="Delete")
 
     plt.xlabel("Number of stations (n)")
-    plt.ylabel("Average time per operation (µs)")  # now labelled properly
+    plt.ylabel("Average time per operation (µs)")
     plt.title("Task 1(b): Hash Table Performance (Microseconds)")
     plt.legend()
     plt.grid(True)

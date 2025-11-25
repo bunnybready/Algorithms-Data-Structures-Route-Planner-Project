@@ -9,7 +9,6 @@ class Station:
         self.name = name  # station name
         self.key = key  # integer key (hashed)
 
-    # CLRS tables expect a static method to extract the key
     @staticmethod
     def get_key(obj):
         return obj.key
@@ -52,7 +51,7 @@ print(result)
 
 if result:
     print("Node found:", result.data)
-    T.delete(result)   # CLRS delete requires node reference
+    T.delete(result)
     print(f"Deleted {closed_station}")
 else:
     print(f"'{closed_station}' not found for deletion.")
