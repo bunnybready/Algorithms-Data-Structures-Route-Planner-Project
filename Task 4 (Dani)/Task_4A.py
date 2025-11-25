@@ -1,9 +1,4 @@
-# Task 4(a) - Manual Kruskal-style trace + library verification
-# Self-contained: includes dataset inline
-
-# ------------------------
 # Dataset (embedded)
-# ------------------------
 stations = [
     "King's Cross", "Liverpool Street", "Paddington", "Victoria",
     "Waterloo", "Euston", "Stratford", "Canary Wharf"
@@ -63,9 +58,7 @@ for u, v, w in edges_data:
     graph.add_edge(u, v, w)
 
 
-# ------------------------
 # Disjoint Set (Union-Find)
-# ------------------------
 class DisjointSetNode:
     def __init__(self, key):
         self.key = key
@@ -96,9 +89,7 @@ def union(x, y):
             x_root.rank += 1
 
 
-# ------------------------
 # Kruskal's algorithm
-# ------------------------
 def kruskal(graph):
     V = graph.get_card_V()
     edges = []

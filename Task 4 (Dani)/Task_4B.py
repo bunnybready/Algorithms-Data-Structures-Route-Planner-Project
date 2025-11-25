@@ -1,7 +1,3 @@
-# task4b_code_fixed.py
-# Task 4(b) - empirical measurement + real London backbone + impact analysis
-# Self-contained with embedded implementations
-
 import os
 import random
 import time
@@ -9,9 +5,7 @@ import math
 import matplotlib.pyplot as plt
 
 
-# ------------------------
 # Disjoint Set (Union-Find) for Kruskal
-# ------------------------
 class DisjointSetNode:
     def __init__(self, key):
         self.key = key
@@ -42,9 +36,7 @@ def union(x, y):
             x_root.rank += 1
 
 
-# ------------------------
 # Graph Classes
-# ------------------------
 class Edge:
     def __init__(self, v, weight):
         self.v = v
@@ -76,9 +68,7 @@ class AdjacencyListGraph:
         return self.adj_list[u]
 
 
-# ------------------------
 # Kruskal's Algorithm
-# ------------------------
 def kruskal(graph):
     V = graph.get_card_V()
     edges = []
@@ -107,9 +97,7 @@ def kruskal(graph):
     return mst_graph
 
 
-# ------------------------
 # Dijkstra's Algorithm
-# ------------------------
 def dijkstra(graph, source):
     V = graph.get_card_V()
     dist = [math.inf] * V
@@ -143,9 +131,7 @@ def dijkstra(graph, source):
     return dist, parent
 
 
-# ------------------------
 # Utility Functions
-# ------------------------
 def generate_weighted_graph(n, density=0.15, min_w=1, max_w=20):
     G = AdjacencyListGraph(n, directed=False, weighted=True)
     for u in range(n):
@@ -192,9 +178,7 @@ def plot_and_save(sizes, times, outpath):
     plt.show()
 
 
-# ------------------------
 # London Underground Data Loader
-# ------------------------
 def load_london_excel(path):
     try:
         import pandas as pd
@@ -320,9 +304,7 @@ def impact_analysis(original_graph, stations, idx, mst_edges, source_name, targe
     print(f"Percentage Increase: {((dist_back[target] / dist_full[target]) - 1) * 100:.2f}%")
 
 
-# ------------------------
 # Main Function
-# ------------------------
 def run_task4b():
     print("=" * 70)
     print("TASK 4(b): Empirical MST Runtime Measurement")
