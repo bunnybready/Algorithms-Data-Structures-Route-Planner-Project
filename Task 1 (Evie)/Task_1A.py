@@ -7,7 +7,7 @@ from clrsPython.Chapter_11.hash_functions import cryptographic_hash
 class Station:
     def __init__(self, name, key):
         self.name = name  # station name
-        self.key = key  # integer key (hashed)
+        self.key = key  # integer key
 
     @staticmethod
     def get_key(obj):
