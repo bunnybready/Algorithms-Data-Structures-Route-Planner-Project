@@ -1,10 +1,10 @@
-#Importing Dijkstra function and Adjacency list graph from clrs library provided
+#Importing Dijkstra function and Adjacency list graph from clrs library
 from clrsPython.Chapter_22.dijkstra import dijkstra
 from clrsPython.Utility_functions.adjacency_list_graph import AdjacencyListGraph
 #Listing the station
 print("--Stations-- \n A \n B \n C \n D \n E")
 
-#Define stations and mapping them to integer indices
+#Define stations and maping them to integer indices
 stations = ['A', 'B', 'C', 'D', 'E']
 station_to_index = {station: i for i, station in enumerate(stations)}
 index_to_station = {i: station for station, i in station_to_index.items()}
@@ -61,4 +61,4 @@ print(f"Code computation result: {' -> '.join(path)}, {total_time} minutes")
 if total_time == 10 and path == ['A', 'C', 'B', 'D', 'E']:
     print("SUCCESS: Manual and code results match!")
 else:
-    print("❌ DISCREPANCY: There is a difference between manual and code results.")
+    print("FAILED: There is a difference between manual and code results.")

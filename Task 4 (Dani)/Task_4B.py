@@ -359,7 +359,6 @@ def run_task4b():
     print(f"\nAll redundant edges saved to: {outfile}")
 
     # Part 3: Impact analysis example
-    # Update these station names to match your dataset
     example_source = "Wimbledon"
     example_target = "Stratford"
 
