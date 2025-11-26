@@ -1,20 +1,13 @@
-# ============================================================
-# TASK 2B – EMPIRICAL MEASUREMENT + LONDON UNDERGROUND NETWORK
-# ============================================================
 
 import time
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# CLRS library imports
 from adjacency_list_graph import AdjacencyListGraph
 from dijkstra import dijkstra
 
 
-# ============================================================
-# 1. ARTIFICIAL GRAPH GENERATOR
-# ============================================================
 def generate_artificial_graph(n, edge_probability=0.05, max_weight=20):
     graph = AdjacencyListGraph(n, directed=False, weighted=True)
 
@@ -30,9 +23,6 @@ def generate_artificial_graph(n, edge_probability=0.05, max_weight=20):
     return graph
 
 
-# ============================================================
-# 2. EMPIRICAL RUNTIME MEASUREMENT
-# ============================================================
 def measure_runtime(n, trials=20):
     graph = generate_artificial_graph(n)
     total = 0
@@ -47,9 +37,7 @@ def measure_runtime(n, trials=20):
     return total / trials
 
 
-# ============================================================
-# 3. RUNTIME EXPERIMENT AND PLOT
-# ============================================================
+
 def run_empirical_test():
     sizes = list(range(100, 1100, 100))
     times = []
@@ -70,15 +58,11 @@ def run_empirical_test():
     plt.show()
 
 
-# ============================================================
-# 4. LOAD REAL LONDON UNDERGROUND DATA
-# ============================================================
 def load_real_network(filepath):
 
     df = pd.read_excel(filepath)
     print(df.columns)
 
-    # ---- CLEAN THE DATA ----
 
     # Remove rows missing data
     df = df.dropna(subset=["Station 1", "Station 2", "Time"])
@@ -96,7 +80,6 @@ def load_real_network(filepath):
     # Remove self-loops
     df = df[df["Station 1"] != df["Station 2"]]
 
-    # ---------------------------------------------
 
     stations = sorted(set(df["Station 1"]).union(df["Station 2"]))
     station_to_index = {name: i for i, name in enumerate(stations)}
@@ -127,9 +110,8 @@ def load_real_network(filepath):
     return graph, station_to_index, index_to_station
 
 
-# ============================================================
-# 5. RUN SHORTEST PATH ON REAL NETWORK
-# ============================================================
+
+# run shortest path on real network
 def run_real_shortest_path(graph, station_to_index, index_to_station, start, end):
     s = station_to_index[start]
     t = station_to_index[end]
@@ -146,9 +128,7 @@ def run_real_shortest_path(graph, station_to_index, index_to_station, start, end
     return path, d[t]
 
 
-# ============================================================
-# MAIN EXECUTION
-# ============================================================
+# main execution
 if __name__ == "__main__":
 
     print("\n==============================")
