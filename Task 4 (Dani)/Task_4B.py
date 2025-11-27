@@ -324,7 +324,7 @@ def run_task4b():
     print()
 
     # Part 2: Real London Underground backbone
-    excel_path = os.path.join("data", "London Underground Data.xlsx")
+    excel_path = os.path.join("data.London Underground Data.xlsx")
 
     try:
         G, stations, idx = load_london_excel(excel_path)

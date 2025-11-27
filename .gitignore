@@ -31,3 +31,6 @@ __pycache__/
 *.obj
 
 /venv
+Task 1 (Evie)/task1b_performance_plot_microseconds.png
+Task 3 (Ruhina)/task3b_performance_graph.png
+Task 4 (Dani)/outputs/graphs/task4b_runtime_plot.png
